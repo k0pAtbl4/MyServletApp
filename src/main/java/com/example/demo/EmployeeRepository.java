@@ -6,23 +6,16 @@ import java.util.List;
 
 public class EmployeeRepository {
 
-    /*public static void main(String[] args) {
-        getConnection();
-
-        Employee employee = new Employee();
-
-        employee.setName("oleg");
-        employee.setEmail(" ");
-        employee.setCountry(" ");
-        save(employee);
-    }*/
+    public static void main(String[] args) {
+        System.out.println(getAllEmployees());
+    }
 
     public static Connection getConnection() {
 
         Connection connection = null;
         String url = "jdbc:postgresql://localhost:5432/employee";
         String user = "postgres";
-        String password = "postgres";
+        String password = "1qaz2wsxzxcZ1";
 
         try {
             connection = DriverManager.getConnection(url, user, password);
@@ -39,18 +32,28 @@ public class EmployeeRepository {
 
     public static int save(Employee employee) {
         int status = 0;
+
+        Connection connection = null;
+
         try {
-            Connection connection = EmployeeRepository.getConnection();
-            PreparedStatement ps = connection.prepareStatement("insert into users(name,email,country) values (?,?,?)");
+            connection = EmployeeRepository.getConnection();
+            PreparedStatement ps = connection.prepareStatement("insert into users.users(name,email,country) values (?,?,?)");
             ps.setString(1, employee.getName());
             ps.setString(2, employee.getEmail());
             ps.setString(3, employee.getCountry());
 
             status = ps.executeUpdate();
-            connection.close();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException sqlee) {
+                sqlee.printStackTrace();
+            }
         }
         return status;
     }
@@ -59,19 +62,28 @@ public class EmployeeRepository {
 
         int status = 0;
 
+        Connection connection = null;
+
         try {
-            Connection connection = EmployeeRepository.getConnection();
-            PreparedStatement ps = connection.prepareStatement("update users set name=?,email=?,country=? where id=?");
+            connection = EmployeeRepository.getConnection();
+            PreparedStatement ps = connection.prepareStatement("update users.users set name=?,email=?,country=? where id=?");
             ps.setString(1, employee.getName());
             ps.setString(2, employee.getEmail());
             ps.setString(3, employee.getCountry());
             ps.setInt(4, employee.getId());
 
             status = ps.executeUpdate();
-            connection.close();
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException sqlee) {
+                sqlee.printStackTrace();
+            }
         }
         return status;
     }
@@ -80,16 +92,25 @@ public class EmployeeRepository {
 
         int status = 0;
 
+        Connection connection = null;
+
         try {
-            Connection connection = EmployeeRepository.getConnection();
-            PreparedStatement ps = connection.prepareStatement("delete from users where id=?");
+            connection = EmployeeRepository.getConnection();
+            PreparedStatement ps = connection.prepareStatement("delete from users.users where id=?");
             ps.setInt(1, id);
             status = ps.executeUpdate();
 
-            connection.close();
 
         } catch (SQLException exception) {
             exception.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException sqlee) {
+                sqlee.printStackTrace();
+            }
         }
         return status;
     }
@@ -98,9 +119,11 @@ public class EmployeeRepository {
 
         Employee employee = new Employee();
 
+        Connection connection = null;
+
         try {
-            Connection connection = EmployeeRepository.getConnection();
-            PreparedStatement ps = connection.prepareStatement("select * from users where id=?");
+            connection = EmployeeRepository.getConnection();
+            PreparedStatement ps = connection.prepareStatement("select * from users.users where id=?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -109,10 +132,17 @@ public class EmployeeRepository {
                 employee.setEmail(rs.getString(3));
                 employee.setCountry(rs.getString(4));
             }
-            connection.close();
 
         } catch (SQLException exception) {
             exception.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException sqlee) {
+                sqlee.printStackTrace();
+            }
         }
         return employee;
     }
@@ -121,9 +151,11 @@ public class EmployeeRepository {
 
         List<Employee> listEmployees = new ArrayList<>();
 
+        Connection connection = null;
+
         try {
-            Connection connection = EmployeeRepository.getConnection();
-            PreparedStatement ps = connection.prepareStatement("select * from users");
+            connection = EmployeeRepository.getConnection();
+            PreparedStatement ps = connection.prepareStatement("select * from users.users");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -137,10 +169,17 @@ public class EmployeeRepository {
 
                 listEmployees.add(employee);
             }
-            connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException sqlee) {
+                sqlee.printStackTrace();
+            }
         }
         return listEmployees;
     }
