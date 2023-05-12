@@ -1,11 +1,24 @@
 package com.example.demo;
 
 public class Employee {
-
     private int id;
     private String name;
     private String country;
     private String email;
+
+    public Employee(String name, String country, String email) {
+        this.id = 0;
+        this.name = name;
+        this.country = country;
+        this.email = email;
+    }
+
+    public Employee() {
+        this.id = 0;
+        this.name = "unknown";
+        this.country = "unknown";
+        this.email = "unknown";
+    }
 
     public int getId() {
         return id;
