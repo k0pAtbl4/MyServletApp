@@ -30,8 +30,9 @@ public class EmployeeRepository {
         return connection;
     }
 
-    public static int save(Employee employee) {
+    public static String save(Employee employee) {
         int status = 0;
+        String result = "";
 
         Connection connection = null;
 
@@ -55,7 +56,13 @@ public class EmployeeRepository {
                 sqlee.printStackTrace();
             }
         }
-        return status;
+
+        if (status > 0) {
+            result = "Record saved successfully!";
+        } else {
+            result = "Sorry! unable to save record";
+        }
+        return result;
     }
 
     public static int update(Employee employee) {
@@ -147,11 +154,13 @@ public class EmployeeRepository {
         return employee;
     }
 
-    public static List<Employee> getAllEmployees() {
+    public static String getAllEmployees() {
 
         List<Employee> listEmployees = new ArrayList<>();
 
         Connection connection = null;
+
+        StringBuilder result = new StringBuilder();
 
         try {
             connection = EmployeeRepository.getConnection();
@@ -181,6 +190,11 @@ public class EmployeeRepository {
                 sqlee.printStackTrace();
             }
         }
-        return listEmployees;
+
+        for (Employee employee : listEmployees) {
+            result.append(employee);
+        }
+
+        return result.toString();
     }
 }

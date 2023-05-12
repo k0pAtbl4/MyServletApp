@@ -25,17 +25,10 @@ public class SaveServlet extends HttpServlet {
 
         Employee employee = new Employee(name, email, country);
 
-        //out.println(employee.toString());
-        //out.println(EmployeeRepository.getConnection());
+        String status = EmployeeRepository.save(employee);
 
-        int status = EmployeeRepository.save(employee);
-        //out.println(status);
+        out.print(status);
 
-        if (status > 0) {
-            out.print("Record saved successfully!");
-        } else {
-            out.println("Sorry! unable to save record");
-        }
         out.close();
     }
 }
